@@ -1,21 +1,36 @@
 const mongoose = require('mongoose');
+const Redis = require('ioredis'); // ✅ اضافه کردن ماژول ioredis
 const config = require('./config/env.config');
 const logger = require('./utils/logger');
-
-// ✅ ایمپورت اپلیکیشن کانفیگ شده از فایل app.js
 const app = require('./app');
 
 const startServer = async () => {
   try {
-    // 1️⃣ اتصال به دیتابیس (الزامی برای پروژه واقعی)
-    // اگر دیتابیس وصل نشود، به خطای catch می‌رود و پیام می‌دهد
+    // 1️⃣ اتصال به MongoDB
     await mongoose.connect(config.mongoose.url, config.mongoose.options);
-    
-    // لاگ کردن موفقیت اتصال
     console.log('✅ MongoDB Connected Successfully');
     logger.info('✅ MongoDB Connected');
 
-    // 2️⃣ روشن کردن سرور
+    // 2️⃣ اتصال به Redis
+    if (process.env.REDIS_URL) {
+      try {
+        const redis = new Redis(process.env.REDIS_URL);
+        redis.on('connect', () => {
+          console.log('✅ Redis Connected Successfully');
+          logger.info('✅ Redis Connected');
+        });
+        redis.on('error', (err) => {
+          console.error('❌ Redis Error:', err.message);
+          logger.error(`❌ Redis Error: ${err.message}`);
+        });
+      } catch (redisErr) {
+        console.error('❌ Redis Connection Failed:', redisErr.message);
+      }
+    } else {
+      console.warn('⚠️ Warning: REDIS_URL not found in environment variables.');
+    }
+
+    // 3️⃣ روشن کردن سرور
     const PORT = config.port || 3000;
     
     app.listen(PORT, () => {
@@ -26,14 +41,13 @@ const startServer = async () => {
     });
 
   } catch (error) {
-    // اگر خطایی در اتصال به دیتابیس یا استارتاپ رخ دهد
     console.error('❌ CRITICAL ERROR:', error.message);
     logger.error(`❌ Server startup failed: ${error.message}`);
-    process.exit(1); // بستن برنامه
+    process.exit(1);
   }
 };
 
-// ⚠️ نکته امنیتی برای ویندوز (جلوگیری از کرش کردن توسط کاراکترهای فارسی در لاگ)
+// ⚠️ نکته امنیتی برای ویندوز
 if (process.platform === 'win32') {
   const rl = require('readline').createInterface({
     input: process.stdin,
