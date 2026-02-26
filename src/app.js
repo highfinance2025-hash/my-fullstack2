@@ -16,8 +16,6 @@ const { apiResponse } = require('./utils/api-response');
 const walletRoutes = require('./routes/wallet.routes');
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
-// ✅ اضافه کردن index routes
-const indexRoutes = require('./routes/index');
 
 class HTLandApp {
   constructor() {
@@ -83,17 +81,26 @@ class HTLandApp {
     };
   }
 
-  // ✅ متد جدید: سرو کردن فایل‌های فرانت‌اند (index.html, css, js)
+  // ✅ متد کامل شده: سرو کردن فایل‌های فرانت‌اند
   initializeFrontendServing() {
     // مسیر ریشه پروژه (خروج از پوشه src)
     const rootPath = path.resolve(__dirname, '..');
 
-    // سرو کردن پوشه‌های استاتیک موجود در ریشه پروژه
+    // ۱. سرو کردن پوشه‌های استاتیک
     this.app.use('/css', express.static(path.join(rootPath, 'css')));
     this.app.use('/js', express.static(path.join(rootPath, 'js')));
     this.app.use('/images', express.static(path.join(rootPath, 'images')));
 
-    // سرو کردن فایل index.html اصلی
+    // ۲. سرو کردن فایل‌های تکی (برای PWA الزامی است)
+    this.app.get('/manifest.json', (req, res) => {
+      res.sendFile(path.join(rootPath, 'manifest.json'));
+    });
+    
+    this.app.get('/service-worker.js', (req, res) => {
+      res.sendFile(path.join(rootPath, 'service-worker.js'));
+    });
+
+    // ۳. صفحه اصلی
     this.app.get('/', (req, res) => {
       res.sendFile(path.join(rootPath, 'index.html'));
     });
@@ -105,11 +112,6 @@ class HTLandApp {
       const health = await this.healthCheck();
       res.api.success(health, 'Service is healthy');
     });
-
-    // ✅ Index Route - خوش آمدگویی (API Info)
-    // این خط را کامنت کردم چون تابع initializeFrontendServing بالا '/' را مدیریت می‌کند
-    // اگر می‌خواهید /api اطلاعات بدهد، مسیر را تغییر دهید
-    // this.app.use('/', indexRoutes); 
 
     // 📚 API Documentation (Public)
     this.app.get('/api/docs', (req, res) => {
