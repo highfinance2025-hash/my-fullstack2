@@ -7,7 +7,7 @@
 const crypto = require('crypto');
 const Redis = require('ioredis');
 const logger = require('../utils/logger');
-const SMSProvider = require('./smsProvider');
+const smsProvider = require('./smsProvider');
 
 /**
  * @class AuthService
@@ -318,4 +318,5 @@ www.htland.ir`;
 }
 
 // Singleton instance
+
 module.exports = new AuthService();
