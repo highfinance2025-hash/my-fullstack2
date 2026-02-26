@@ -25,9 +25,10 @@ class HTLandApp {
     this.config = config;
     this.logger = logger;
     
+    // ترتیب مهم است: اول Middlewares، بعد فایل‌های استاتیک، بعد API Routes
     this.initializeMiddlewares();
+    this.initializeFrontendServing(); // ✅ باید قبل از Routes اجرا شود
     this.initializeRoutes();
-    this.initializeFrontendServing(); // ✅ اضافه شده برای سرو فایل‌های ریشه
     this.initializeErrorHandling();
     this.setupGracefulShutdown();
   }
@@ -82,6 +83,22 @@ class HTLandApp {
     };
   }
 
+  // ✅ متد جدید: سرو کردن فایل‌های فرانت‌اند (index.html, css, js)
+  initializeFrontendServing() {
+    // مسیر ریشه پروژه (خروج از پوشه src)
+    const rootPath = path.resolve(__dirname, '..');
+
+    // سرو کردن پوشه‌های استاتیک موجود در ریشه پروژه
+    this.app.use('/css', express.static(path.join(rootPath, 'css')));
+    this.app.use('/js', express.static(path.join(rootPath, 'js')));
+    this.app.use('/images', express.static(path.join(rootPath, 'images')));
+
+    // سرو کردن فایل index.html اصلی
+    this.app.get('/', (req, res) => {
+      res.sendFile(path.join(rootPath, 'index.html'));
+    });
+  }
+
   initializeRoutes() {
     // 🩺 Health Check (Public)
     this.app.get('/health', async (req, res) => {
@@ -89,8 +106,10 @@ class HTLandApp {
       res.api.success(health, 'Service is healthy');
     });
 
-    // ✅ Index Route - خوش آمدگویی
-    this.app.use('/', indexRoutes);
+    // ✅ Index Route - خوش آمدگویی (API Info)
+    // این خط را کامنت کردم چون تابع initializeFrontendServing بالا '/' را مدیریت می‌کند
+    // اگر می‌خواهید /api اطلاعات بدهد، مسیر را تغییر دهید
+    // this.app.use('/', indexRoutes); 
 
     // 📚 API Documentation (Public)
     this.app.get('/api/docs', (req, res) => {
@@ -130,22 +149,6 @@ class HTLandApp {
         this.getStaticFileOptions()
       ));
     }
-  }
-
-  // ✅ متد جدید: سرو کردن فایل‌های فرانت‌اند (index.html, css, js)
-  initializeFrontendServing() {
-    // مسیر ریشه پروژه (خروج از پوشه src)
-    const rootPath = path.resolve(__dirname, '..');
-
-    // سرو کردن پوشه‌های استاتیک موجود در ریشه پروژه
-    this.app.use('/css', express.static(path.join(rootPath, 'css')));
-    this.app.use('/js', express.static(path.join(rootPath, 'js')));
-    this.app.use('/images', express.static(path.join(rootPath, 'images')));
-
-    // سرو کردن فایل index.html اصلی
-    this.app.get('/', (req, res) => {
-      res.sendFile(path.join(rootPath, 'index.html'));
-    });
   }
 
   getApiEndpoints() {
@@ -272,5 +275,6 @@ class HTLandApp {
     return this.app;
   }
 }
+
 
 module.exports = new HTLandApp().getApp();
