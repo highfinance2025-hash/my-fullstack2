@@ -24,7 +24,8 @@ class AuthService {
     });
     
     // سرویس ارسال پیامک
-    this.smsProvider = new SMSProvider();
+    // اصلاح شده: استفاده از متغیر smsProvider که در بالا ایمپورت شده است
+    this.smsProvider = smsProvider; 
     
     // تنظیمات rate limiting
     this.rateLimits = {
@@ -318,6 +319,4 @@ www.htland.ir`;
 }
 
 // Singleton instance
-
 module.exports = new AuthService();
-
