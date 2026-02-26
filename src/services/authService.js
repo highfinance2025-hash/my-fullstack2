@@ -16,7 +16,7 @@ const smsProvider = require('./smsProvider');
 class AuthService {
   constructor() {
     // اتصال به Redis برای rate limiting
-    this.redisClient = new Redis({
+    this.redisClient = new Redis(process.env.REDIS_URL || {
       host: process.env.REDIS_HOST || 'localhost',
       port: process.env.REDIS_PORT || 6379,
       password: process.env.REDIS_PASSWORD,
@@ -320,3 +320,4 @@ www.htland.ir`;
 
 // Singleton instance
 module.exports = new AuthService();
+
