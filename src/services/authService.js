@@ -320,3 +320,4 @@ www.htland.ir`;
 // Singleton instance
 
 module.exports = new AuthService();
+
