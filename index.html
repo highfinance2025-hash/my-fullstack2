@@ -7,7 +7,8 @@
     <title>HTLand | سرزمین مزه سالم - محصولات ارگانیک شمال ایران</title>
     
     <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
+    <!-- ✅ تغییر: اسلش (/) قبل از manifest.json اضافه شد تا از ریشه خوانده شود -->
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#2E7D32">
     
     <!-- SEO -->
@@ -81,8 +82,9 @@
     </style>
     
     <!-- Deferred CSS -->
-    <link rel="stylesheet" href="css/style.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="css/style.css"></noscript>
+    <!-- ✅ تغییر: اسلش (/) قبل از css/style.css اضافه شد -->
+    <link rel="stylesheet" href="/css/style.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -685,7 +687,22 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
-    <!-- JavaScript -->
-    <script src="js/main.js" defer></script>
+    <!-- ✅ تغییر: اسلش (/) قبل از js/main.js اضافه شد -->
+    <script src="/js/main.js" defer></script>
+
+    <!-- ✅ کد جدید: فعال‌سازی Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('SW registered: ', registration);
+            })
+            .catch(registrationError => {
+              console.log('SW registration failed: ', registrationError);
+            });
+        });
+      }
+    </script>
 </body>
 </html>
