@@ -11,11 +11,16 @@ class SecurityMiddleware {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          styleSrc: ["'self'", "'unsafe-inline'"],
-          scriptSrc: ["'self'"],
-          imgSrc: ["'self'", "data:", "https:"],
-          fontSrc: ["'self'"],
-          connectSrc: ["'self'"],
+          // اجازه لود استایل از خود سایت، Inline Styles، Google Fonts و CDNها
+          styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+          // اجازه لود اسکریپت از خود سایت، Inline Scripts و CDNهای مورد نیاز
+          scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+          // اجازه لود تصاویر از هر منبع امن
+          imgSrc: ["'self'", "data:", "https:", "http:"],
+          // اجازه لود فونت از خود سایت، Google Fonts و CDNها
+          fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+          // اجازه اتصال به APIهای جدید
+          connectSrc: ["'self'", "https://htland.shop", "https://api.htland.shop"],
           frameSrc: ["'none'"],
           objectSrc: ["'none'"]
         }
@@ -29,6 +34,15 @@ class SecurityMiddleware {
   }
 
   static cors(allowedOrigins = []) {
+    // اضافه کردن دامنه‌های جدید به لیست پیش‌فرض
+    const defaultOrigins = [
+      'https://htland.shop',
+      'https://www.htland.shop',
+      'https://api.htland.shop'
+    ];
+    
+    const finalOrigins = [...new Set([...defaultOrigins, ...allowedOrigins])];
+
     const corsOptions = {
       origin: (origin, callback) => {
         // Allow requests with no origin (mobile apps, curl, etc.) in non-production
@@ -42,7 +56,7 @@ class SecurityMiddleware {
         }
         
         // Allow if origin is in allowed list
-        if (allowedOrigins.includes(origin)) {
+        if (finalOrigins.includes(origin)) {
           return callback(null, true);
         }
         
