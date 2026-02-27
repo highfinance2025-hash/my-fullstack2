@@ -2154,4 +2154,150 @@ body {
 .focus-visible:focus {
     outline: 3px solid var(--primary-color);
     outline-offset: 2px;
+
 }
+/* ==================== ROOT VARIABLES (Apple Style) ==================== */
+:root {
+    /* Primary Colors - Nature Theme */
+    --primary-color: #2E7D32;
+    --primary-dark: #1B5E20;
+    --primary-light: #4CAF50;
+    
+    /* Glassmorphism Colors */
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    
+    /* Text & BG */
+    --text-primary: #1A237E;
+    --bg-primary: #F9FBE7;
+    
+    /* Animation Timing (Apple Curve) */
+    --apple-curve: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --transition-fast: 200ms var(--apple-curve);
+    --transition-base: 400ms var(--apple-curve);
+}
+
+/* ==================== HEADER (Glassmorphism) ==================== */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    /* افکت شیشه ای (Glass Effect) */
+    background: var(--glass-bg);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+    transition: all var(--transition-base);
+}
+
+.header.scrolled {
+    height: 65px;
+    box-shadow: var(--glass-shadow);
+}
+
+/* ==================== FLOATING MENU (Waterfall Effect) ==================== */
+.floating-menu {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.floating-submenu {
+    /* حذف display none/block و استفاده از opacity برای انیمیشن روان */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px) scale(0.98); /* شروع از پایین و کمی کوچک */
+    transition: all 0.4s var(--apple-curve);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border-radius: 20px; /* گوشه‌های گرد بیشتر */
+    border: 1px solid rgba(255,255,255,0.6);
+    overflow: hidden; /* برای افکت آبشاری */
+}
+
+/* وقتی موس روی آیتم می‌رود (Hover) */
+.floating-item:hover .floating-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1); /* حرکت به بالا و سایز نرمال */
+}
+
+/* انیمیشن آیتم‌های داخل منو (Staggered Animation) */
+.floating-item:hover .submenu-column a {
+    animation: fadeInUp 0.3s var(--apple-curve) forwards;
+    opacity: 0;
+}
+
+.floating-item:hover .submenu-column a:nth-child(1) { animation-delay: 0.05s; }
+.floating-item:hover .submenu-column a:nth-child(2) { animation-delay: 0.1s; }
+.floating-item:hover .submenu-column a:nth-child(3) { animation-delay: 0.15s; }
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==================== BUTTONS (Soft & 3D Hover) ==================== */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 50px; /* دکمه‌های کپسولی */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+/* افکت هاور نرم و سه بعدی */
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(46, 125, 50, 0.4);
+}
+
+/* افکت موج (Ripple) هنگام کلیک */
+.btn-primary:active {
+    transform: scale(0.96);
+}
+
+/* ==================== PRODUCT CARDS (Floating Effect) ==================== */
+.product-card {
+    background: white;
+    border-radius: 24px; /* گردی بیشتر */
+    border: 1px solid rgba(0,0,0,0.03);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.product-card:hover {
+    transform: translateY(-12px) scale(1.02); /* بالا آمدن و کمی بزرگ شدن */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    border-color: var(--primary-light);
+}
+
+/* ==================== IMAGES (High Quality Rendering) ==================== */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    transition: transform 0.8s var(--apple-curve);
+}
+
+.product-card:hover img {
+    transform: scale(1.1);
+}
+
+/* ==================== CUSTOM CURSOR (Optional Premium Feel) ==================== */
+/* اگر می‌خواهید نشانگر موس تغییر کند (برای دسکتاپ) */
+/*
+body { cursor: none; }
+.cursor { width: 20px; height: 20px; border: 2px solid var(--primary-color); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.1s; }
+*/
+
+/* ادامه استایل‌های قبلی خودتان را اینجا نگه دارید (Responsive و ...) */
