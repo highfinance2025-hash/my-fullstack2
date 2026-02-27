@@ -1774,9 +1774,6 @@ window.addEventListener('error', (e) => {
 // ==================== //
 // EXPORT FOR DEBUGGING //
 // ==================== //
-if (typeof window !== 'undefined') {
-    window.HTLand = HTLand;
-
 }
 // HTLand Frontend Application - Main JavaScript File
 
@@ -3678,3 +3675,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.aiAssistant = new AIAssistant();
 });
 }
+
