@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Redis = require('ioredis'); // ✅ اضافه کردن ماژول ioredis
+// const Redis = require('ioredis'); // غیرفعال شده - به خاطر نبود Redis در Render Free
 const config = require('./config/env.config');
 const logger = require('./utils/logger');
 const app = require('./app');
@@ -11,24 +11,28 @@ const startServer = async () => {
     console.log('✅ MongoDB Connected Successfully');
     logger.info('✅ MongoDB Connected');
 
-    // 2️⃣ اتصال به Redis
-    if (process.env.REDIS_URL) {
-      try {
-        const redis = new Redis(process.env.REDIS_URL);
-        redis.on('connect', () => {
-          console.log('✅ Redis Connected Successfully');
-          logger.info('✅ Redis Connected');
-        });
-        redis.on('error', (err) => {
-          console.error('❌ Redis Error:', err.message);
-          logger.error(`❌ Redis Error: ${err.message}`);
-        });
-      } catch (redisErr) {
-        console.error('❌ Redis Connection Failed:', redisErr.message);
-      }
-    } else {
-      console.warn('⚠️ Warning: REDIS_URL not found in environment variables.');
-    }
+    // 2️⃣ اتصال به Redis - غیرفعال شده برای Render Free Tier
+console.log('⚠️ Redis is disabled (not available on Render Free Tier)');
+// اگر در آینده به Redis نیاز داشتید، کد زیر را فعال کنید:
+/*
+if (process.env.REDIS_URL) {
+  try {
+    const redis = new Redis(process.env.REDIS_URL);
+    redis.on('connect', () => {
+      console.log('✅ Redis Connected Successfully');
+      logger.info('✅ Redis Connected');
+    });
+    redis.on('error', (err) => {
+      console.error('❌ Redis Error:', err.message);
+      logger.error(`❌ Redis Error: ${err.message}`);
+    });
+  } catch (redisErr) {
+    console.error('❌ Redis Connection Failed:', redisErr.message);
+  }
+} else {
+  console.warn('⚠️ Warning: REDIS_URL not found in environment variables.');
+}
+*/
 
     // 3️⃣ روشن کردن سرور
     const PORT = config.port || 3000;
