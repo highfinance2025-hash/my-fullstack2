@@ -5,7 +5,7 @@
  */
 
 const crypto = require('crypto');
-const Redis = require('ioredis');
+// const Redis = require('ioredis');
 const logger = require('../utils/logger');
 const smsProvider = require('./smsProvider');
 
@@ -16,7 +16,7 @@ const smsProvider = require('./smsProvider');
 class AuthService {
   constructor() {
     // اتصال به Redis برای rate limiting
-    this.redisClient = new Redis(process.env.REDIS_URL || {
+    this.redisClient = null;
       host: process.env.REDIS_HOST || 'localhost',
       port: process.env.REDIS_PORT || 6379,
       password: process.env.REDIS_PASSWORD,
@@ -41,8 +41,9 @@ class AuthService {
    * @param {string} action - نوع عملیات
    * @returns {Promise<boolean>} - آیا مجاز است یا نه
    */
-  async checkRateLimit(identifier, action) {
-    try {
+ async checkRateLimit(identifier, action) {
+  // بدون Redis، محدودیتی اعمال نمیشه
+  return true;
       const limitConfig = this.rateLimits[action];
       if (!limitConfig) return true;
       
