@@ -762,30 +762,135 @@ class AuthSystem {
 // ==================== //
 class ProductSystem {
     constructor() { this.products = []; this.categories = []; this.cart = []; this.wishlist = []; this.init(); }
-    init() { this.loadData(); this.bindEvents(); this.renderCategories(); this.renderProducts(); }
     loadData() {
+        // ==================== دسته‌بندی‌ها (Categories) ====================
         this.categories = [
-            { id: 1, name: 'برنج شمال', icon: 'fas fa-seedling', description: 'هاشمی، طارم، صدری درجه یک' },
-            { id: 2, name: 'خاویار ایرانی', icon: 'fas fa-fish', description: 'طلایی، سیاه، فیل‌ماهی' },
-            { id: 3, name: 'ماهی تازه', icon: 'fas fa-fish', description: 'کیلکا، کپور، سفید شمال' },
-            { id: 4, name: 'عسل طبیعی', icon: 'fas fa-honey-pot', description: 'گون، کنار، جنگلی' },
-            { id: 5, name: 'مرغ محلی', icon: 'fas fa-drumstick-bite', description: 'طبیعی، ارگانیک شمال' },
-            { id: 6, name: 'سوغات شمال', icon: 'fas fa-gift', description: 'ترشیجات، مربا، خشکبار' }
+            {
+                id: 1,
+                name: 'برنج شمال',
+                image: 'https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400',
+                description: 'هاشمی، طارم، صدری'
+            },
+            {
+                id: 2,
+                name: 'خاویار ایرانی',
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400',
+                description: 'طلایی، سیاه، فیل‌ماهی'
+            },
+            {
+                id: 3,
+                name: 'عسل طبیعی',
+                image: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400',
+                description: 'گون، کنار، جنگلی'
+            },
+            {
+                id: 4,
+                name: 'ماهی تازه',
+                image: 'https://images.unsplash.com/photo-1544943910-4c1dc44aab44?w=400',
+                description: 'سفید، کیلکا، کپور'
+            },
+            {
+                id: 5,
+                name: 'چای و گیاهان',
+                image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=400',
+                description: 'چای لاهیجان، گیاهان دارویی'
+            },
+            {
+                id: 6,
+                name: 'سوغات شمال',
+                image: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400',
+                description: 'ترشیجات، مربا، خشکبار'
+            }
         ];
+
+        // ==================== محصولات (Products) ====================
         this.products = [
-            { id: 1, name: 'برنج هاشمی ممتاز شمال', description: 'برنج هاشمی درجه یک', price: 85000, originalPrice: 95000, discount: 20, badge: 'ارگانیک', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800', rating: 4.8, reviews: 120 },
-            { id: 2, name: 'خاویار طلایی ایرانی', description: 'خاویار درجه یک', price: 290000, originalPrice: 320000, discount: 10, badge: 'پرمیوم', image: 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?w=800', rating: 4.9, reviews: 85 },
-            { id: 3, name: 'عسل طبیعی گون', description: 'عسل خالص', price: 75000, originalPrice: 85000, discount: 15, badge: 'ارگانیک', image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=800', rating: 4.7, reviews: 200 }
+            {
+                id: 1,
+                name: 'برنج هاشمی ممتاز',
+                description: 'برنج هاشمی درجه یک شمال، عطر طبیعی',
+                price: 85000,
+                originalPrice: 95000,
+                discount: 10,
+                badge: 'ارگانیک',
+                image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=600',
+                rating: 4.8,
+                reviews: 120
+            },
+            {
+                id: 2,
+                name: 'خاویار طلایی ایرانی',
+                description: 'خاویار درجه یک فیل ماهی، بسته‌بندی لوکس',
+                price: 2900000,
+                originalPrice: 3200000,
+                discount: 10,
+                badge: 'پرمیوم',
+                image: 'https://images.unsplash.com/photo-1584824486509-112e4181ff6b?w=600',
+                rating: 4.9,
+                reviews: 85
+            },
+            {
+                id: 3,
+                name: 'عسل طبیعی گون',
+                description: 'عسل خالص و ارگانیک، بدون قند مصنوعی',
+                price: 350000,
+                originalPrice: 380000,
+                discount: 5,
+                badge: 'طبیعی',
+                image: 'https://images.unsplash.com/photo-1587049352851-8d4e89133924?w=600',
+                rating: 4.7,
+                reviews: 200
+            },
+            {
+                id: 4,
+                name: 'ماهی سفید دودی',
+                description: 'ماهی سفید تازه دودی شده، طعم اصیل شمال',
+                price: 180000,
+                originalPrice: 0,
+                discount: 0,
+                badge: 'تازه',
+                image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600',
+                rating: 4.6,
+                reviews: 90
+            },
+            {
+                id: 5,
+                name: 'چای لاهیجان ارگانیک',
+                description: 'چای سیاه برگ، برداشت اول بهار',
+                price: 120000,
+                originalPrice: 150000,
+                discount: 20,
+                badge: 'بهاره',
+                image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?w=600',
+                rating: 4.5,
+                reviews: 150
+            },
+            {
+                id: 6,
+                name: 'مربای پرتقال شمال',
+                description: 'مربای خانگی با تکه‌های میوه طبیعی',
+                price: 65000,
+                originalPrice: 0,
+                discount: 0,
+                badge: 'خانگی',
+                image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600',
+                rating: 4.8,
+                reviews: 60
+            }
         ];
     }
-    renderCategories() {
-        if (!elements.categoriesGrid) return;
-        elements.categoriesGrid.innerHTML = this.categories.map((c, i) => `
-            <a href="#${c.name.replace(/\s+/g, '-')}" class="category-card" data-aos="fade-up" data-aos-delay="${i * 100}">
-                <i class="${c.icon}"></i><h3>${c.name}</h3><p>${c.description}</p>
-            </a>
-        `).join('');
-    }
+renderCategories() {
+    if (!elements.categoriesGrid) return;
+    elements.categoriesGrid.innerHTML = this.categories.map((c, i) => `
+        <a href="#${c.name.replace(/\s+/g, '-')}" class="category-card" data-aos="fade-up" data-aos-delay="${i * 100}">
+            <div style="height: 120px; overflow: hidden; border-radius: var(--radius-md); margin-bottom: 1rem;">
+                <img src="${c.image}" alt="${c.name}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <h3>${c.name}</h3>
+            <p>${c.description}</p>
+        </a>
+    `).join('');
+}
     renderProducts() {
         if (!elements.productsGrid) return;
         elements.productsGrid.innerHTML = this.products.map((p, i) => `
